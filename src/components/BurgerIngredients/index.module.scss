@@ -1,0 +1,38 @@
+.product_list {
+    display: flex;
+    flex-wrap: wrap;
+    max-height: calc(100vh - 450px);
+    overflow: auto;
+
+    .item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        width: calc(50% - 12px);
+        font-family: 'Jet Brains Mono';
+        text-align: center;
+
+        .pic {
+            position: relative;
+
+            img {
+                max-width: 100%;
+                height: auto;
+            }
+        }
+
+        .price {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 28px;
+        }
+
+        .name {
+            min-height: 48px;
+            font-size: 16px;
+        }
+    }
+}
