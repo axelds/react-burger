@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { ConstructorElement, Button, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import Styles from './index.module.scss';
 import Data from '../../utils/data.json';
@@ -10,13 +9,14 @@ const BurgerConstructor = () => {
             <div className={Styles.draggable_list}>
                 {Data.map((item, index) => {
                     return (
-                        <div className={Styles.draggable}>
+                        <div key={item._id} className={Styles.draggable}>
                             <DragIcon type="primary" />
                             <ConstructorElement
-                                type="undefined"
+                                type={index === 0 ? 'top' : index === Data.length - 1 ? 'bottom' : 'undefined'}
                                 text={item.name}
                                 price={item.price}
                                 thumbnail={item.image}
+                                isLocked={index === 0 || index === Data.length - 1 ? true : false}
                             />
                         </div>
                     )
@@ -30,21 +30,6 @@ const BurgerConstructor = () => {
             </div>
         </section>
     );
-}
-
-BurgerConstructor.propTypes = {
-    _id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-    proteins: PropTypes.number.isRequired,
-    fat: PropTypes.number.isRequired,
-    carbohydrates: PropTypes.number.isRequired,
-    calories: PropTypes.number.isRequired,
-    price: PropTypes.number.isRequired,
-    image: PropTypes.string.isRequired,
-    image_mobile: PropTypes.string.isRequired,
-    image_large: PropTypes.string.isRequired,
-    __v: PropTypes.number.isRequired,
 }
 
 export default BurgerConstructor;

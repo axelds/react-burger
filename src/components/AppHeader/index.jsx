@@ -4,7 +4,6 @@ import Styles from './index.module.scss';
 
 const AppHeader = () => {
   return (
-    <div>
       <header className="p-4">
         <nav>
           <Button htmlType="button" type="undefined" extraClass={`${Styles.active} pt-4 pr-5 pb-4 pl-5`}>
@@ -24,7 +23,6 @@ const AppHeader = () => {
           </Button>
         </nav>
       </header>
-    </div>
   );
 }
 
