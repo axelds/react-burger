@@ -1,0 +1,12 @@
+body {
+    padding: 40px;
+}
+main {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+
+    & > section {
+       width: 600px;
+    }
+}
