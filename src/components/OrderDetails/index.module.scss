@@ -1,0 +1,10 @@
+.details {
+    text-align: center;
+
+    p {
+
+        &:first-child {
+            text-shadow: 0px 0px 16px rgba(76, 76, 255, 1);
+        }
+    }
+}
