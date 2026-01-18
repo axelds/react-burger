@@ -1,9 +1,10 @@
 import React, { useEffect, useState }  from 'react';
 import PropTypes from 'prop-types';
 import Modal from '../Modal';
-import ModalOverlay from '../ModalOverlay';
+import { useModal } from '../../hooks/useModal';
+import Ingredient from '../Ingredient';
 import IngrediendDetails from '../IngredientDetails';
-import { Tab, CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import Styles from './index.module.scss';
 
 const BurgerIngredients = ( {data} ) => {
@@ -11,7 +12,7 @@ const BurgerIngredients = ( {data} ) => {
         throw new Error('Expected data prop to be not null');
     }
     const [current, setCurrent] = React.useState('bun');
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const { isModalOpen, openModal, closeModal } = useModal();
     const [currentModalData, setCurrentModalData] = useState(null);
 
     return (
@@ -35,17 +36,10 @@ const BurgerIngredients = ( {data} ) => {
                         {data.map((item, index) => {
                             if (item.type === 'bun') {
                                 return (
-                                    <div key={item._id} className={`${Styles.item} mb-8`} onClick={() => {
-                                        setIsModalOpen(true);
+                                    <Ingredient data={item} index={index} key={item._id} onClick={() => {
+                                        openModal();
                                         setCurrentModalData(item);
-                                    }}>
-                                        <div className={Styles.pic}>
-                                            <img src={item.image_large} alt={item.name} />
-                                            { index === 0 && <Counter count={1} size="default" extraClass="m-1" /> }
-                                        </div>
-                                        <div className={Styles.price}><span>{item.price}</span> <CurrencyIcon type="primary" /> </div>
-                                        <div className={Styles.name}>{item.name}</div>
-                                    </div>
+                                    }}/>
                                 )
                             }
                         })}
@@ -57,17 +51,10 @@ const BurgerIngredients = ( {data} ) => {
                         {data.map((item, index) => {
                             if (item.type === 'sauce') {
                                 return (
-                                    <div key={item._id} className={`${Styles.item} mb-8`} onClick={() => {
-                                        setIsModalOpen(true);
+                                    <Ingredient data={item} index={index} key={item._id} onClick={() => {
+                                        openModal();
                                         setCurrentModalData(item);
-                                    }}>
-                                        <div className={Styles.pic}>
-                                            <img src={item.image_large} alt={item.name} />
-                                            { index === 0 && <Counter count={1} size="default" extraClass="m-1" /> }
-                                        </div>
-                                        <div className={Styles.price}><span>{item.price}</span> <CurrencyIcon type="primary" /> </div>
-                                        <div className={Styles.name}>{item.name}</div>
-                                    </div>
+                                    }}/>
                                 )
                             }
                         })}
@@ -79,17 +66,10 @@ const BurgerIngredients = ( {data} ) => {
                         {data.map((item, index) => {
                             if (item.type === 'main') {
                                 return (
-                                    <div key={item._id} className={`${Styles.item} mb-8`} onClick={() => {
-                                        setIsModalOpen(true);
+                                    <Ingredient data={item} index={index} key={item._id} onClick={() => {
+                                        openModal();
                                         setCurrentModalData(item);
-                                    }}>
-                                        <div className={Styles.pic}>
-                                            <img src={item.image_large} alt={item.name} />
-                                            { index === 0 && <Counter count={1} size="default" extraClass="m-1" /> }
-                                        </div>
-                                        <div className={Styles.price}><span>{item.price}</span> <CurrencyIcon type="primary" /> </div>
-                                        <div className={Styles.name}>{item.name}</div>
-                                    </div>
+                                    }}/>
                                 )
                             }
                         })}
@@ -97,15 +77,17 @@ const BurgerIngredients = ( {data} ) => {
                 </div>}
             </div>
             {isModalOpen && (
-                <Modal data={{modal_title: 'Детали ингредиента', onClose: () => setIsModalOpen(false)}}>
+                <Modal data={{modalTitle: 'Детали ингредиента', onClose: () => closeModal()}}>
                     <IngrediendDetails details={currentModalData} />
                 </Modal>
-            )}
-            {isModalOpen && (
-                <ModalOverlay onClose={() => setIsModalOpen(false)}/>
             )}
         </section>
     );
 }
 
+BurgerIngredients.propTypes = {
+    data: PropTypes.array,
+};
+
 export default BurgerIngredients;
+

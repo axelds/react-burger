@@ -3,7 +3,7 @@ import Styles from './index.module.scss';
 
 const IngrediendDetails = ( {details} ) => {
     return (
-        <div className={Styles.details}>
+        <section className={Styles.details}>
             <div className={`${Styles.image} pb-4`}><img src={details.image_large} alt={details.name} /></div>
             <div className="text text_type_main-medium pb-8">{details.name}</div>
             <div className={`${Styles.meta} text text_type_main-default text_color_inactive`}>
@@ -24,7 +24,7 @@ const IngrediendDetails = ( {details} ) => {
                     <p className="text text_type_digits-default">{details.carbohydrates}</p>
                 </div>
             </div>
-        </div>
+        </section>
     );
 }
 

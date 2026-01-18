@@ -1,7 +1,7 @@
 import React, { useEffect, useState }  from 'react';
 import PropTypes from 'prop-types';
 import Modal from '../Modal';
-import ModalOverlay from '../ModalOverlay';
+import { useModal } from '../../hooks/useModal';
 import OrderDetails from '../OrderDetails';
 import { ConstructorElement, Button, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import Styles from './index.module.scss';
@@ -11,7 +11,7 @@ const BurgerConstructor = ({ data }) => {
         throw new Error('Expected data prop to be not null');
     }
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const { isModalOpen, openModal, closeModal } = useModal();
 
     return (
         <section className={`${Styles.list} pt-25`}>
@@ -46,17 +46,14 @@ const BurgerConstructor = ({ data }) => {
             </div>
             <div className={`${Styles.total} mt-10`}>
                 <div className="mr-10"><span>610</span> <CurrencyIcon type="primary" /></div>
-                <Button htmlType="button" type="primary" size="large" onClick={() => setIsModalOpen(true)}>
+                <Button htmlType="button" type="primary" size="large" onClick={() => openModal()}>
                     Оформить заказ
                 </Button>
             </div>
             {isModalOpen && (
-                <Modal data={{modal_title: '', onClose: () => setIsModalOpen(false)}}>
+                <Modal data={{modalTitle: '', onClose: () => closeModal()}}>
                     <OrderDetails />
                 </Modal>
-            )}
-            {isModalOpen && (
-                <ModalOverlay onClose={() => setIsModalOpen(false)}/>
             )}
         </section>
     );
