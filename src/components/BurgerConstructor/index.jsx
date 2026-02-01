@@ -38,7 +38,6 @@ const BurgerConstructor = ({ data }) => {
                                 text={item.name}
                                 price={item.price}
                                 thumbnail={item.image}
-                                isLocked="false"
                             />
                         </div>
                     )
@@ -46,7 +45,7 @@ const BurgerConstructor = ({ data }) => {
             </div>
             <div className={`${Styles.total} mt-10`}>
                 <div className="mr-10"><span>610</span> <CurrencyIcon type="primary" /></div>
-                <Button htmlType="button" type="primary" size="large" onClick={() => openModal()}>
+                <Button htmlType="button" type="primary" size="large" onClick={openModal}>
                     Оформить заказ
                 </Button>
             </div>
