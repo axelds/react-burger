@@ -1,5 +1,5 @@
 import { Logo, Button, ProfileIcon, BurgerIcon, ListIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import Styles from './index.module.scss';
+import Styles from './AppHeader.module.scss';
 
 const AppHeader = () => {
   return (

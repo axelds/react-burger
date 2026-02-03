@@ -2,10 +2,10 @@ import { JSX } from 'react';
 import { useCallback, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { Button, CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import ModalOverlay from '../ModalOverlay';
-import { MODAL_CLOSE } from '../../services/actions';
+import ModalOverlay from '../ModalOverlay/ModalOverlay';
+import { MODAL_CLOSE } from '../../services/actions/modal';
 import { useAppDispatch } from '../../hooks/reducerHook';
-import Styles from './index.module.scss';
+import Styles from './Modal.module.scss';
 
 interface ModalProps {
     children?: JSX.Element | JSX.Element[]
@@ -50,7 +50,7 @@ const Modal = ({ children, title }: ModalProps ) => {
                 </div>
                 <ModalOverlay onClose={closeWindow} />
             </>,
-            document.getElementById('root') as HTMLElement
+            document.getElementById('modals') as HTMLElement
         )
     );
 }

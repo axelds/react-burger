@@ -8,7 +8,7 @@ import {
 import type { Ingredient, DragItem } from '../../utils/types';
 import { INGREDIENT_TYPE } from '../../utils/types';
 
-import Styles from './index.module.scss';
+import Styles from './IngredientCard.module.scss';
 
 interface IngredientCardProps {
     ingredient: Ingredient

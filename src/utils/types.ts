@@ -57,6 +57,25 @@ export interface State {
     orderFailed: boolean
 }
 
+export interface StateIngredients {
+    ingredients: Ingredient[]
+    ingredientsRequest: boolean
+    ingredientsFailed: boolean,
+    ingredientsConstructor: Ingredient[]
+}
+
+export interface StateModal {
+    isModalDetail: boolean
+    isModalOrder: boolean,
+    ingredientDetail: null | Ingredient
+}
+
+export interface StateOrder {
+    order: null | Order
+    orderRequest: boolean
+    orderFailed: boolean
+}
+
 export interface Action {
     type: string
     id?: string

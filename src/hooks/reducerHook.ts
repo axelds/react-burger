@@ -1,7 +1,6 @@
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
-
-import { State } from '../utils/types'
-import { store } from '..'
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import { State } from '../utils/types';
+import { store } from '..';
 
 export type AppStore = typeof store
 export type AppDispatch = AppStore['dispatch']

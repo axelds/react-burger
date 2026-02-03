@@ -1,6 +1,6 @@
 import { useAppSelector } from '../../hooks/reducerHook'
 import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import Styles from './index.module.scss';
+import Styles from './OrderDetails.module.scss';
 
 const OrderDetails = () => {
     const order = useAppSelector((state) => state.order)

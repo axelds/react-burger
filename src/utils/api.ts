@@ -1,5 +1,5 @@
-import { BASE_URL } from './constants'
-import { Ingredient } from './types'
+import { BASE_URL } from './constants';
+import { Ingredient } from './types';
 
 interface SuccessResponse {
     success: boolean

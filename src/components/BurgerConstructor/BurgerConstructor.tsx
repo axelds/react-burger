@@ -1,17 +1,13 @@
 import { useDrop } from 'react-dnd';
 import { Ingredient, DragItem, INGREDIENT_TYPE } from '../../utils/types';
-import {
-    addIngridient,
-    DELETE_INGREDIENT_CONSTRUCTOR,
-    MOVE_INGREDIENT_CONSTRUCTOR,
-    postOrder,
-} from '../../services/actions';
+import { addIngridient, DELETE_INGREDIENT_CONSTRUCTOR, MOVE_INGREDIENT_CONSTRUCTOR } from '../../services/actions/ingredients';
+import { postOrder } from '../../services/actions/order';
 import { useAppDispatch, useAppSelector } from '../../hooks/reducerHook';
 import ConstructorIngredient from './ConstructorIngredient';
-import Modal from '../Modal';
-import OrderDetails from '../OrderDetails';
+import Modal from '../Modal/Modal';
+import OrderDetails from '../OrderDetails/OrderDetails';
 import { ConstructorElement, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import Styles from './index.module.scss';
+import Styles from './BurgerConstructor.module.scss';
 
 const BurgerConstructor = () => {
     const dispatch = useAppDispatch()

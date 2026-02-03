@@ -6,9 +6,9 @@ import '@ya.praktikum/react-developer-burger-ui-components/dist/ui/common.css';
 // @ts-ignore
 import '@ya.praktikum/react-developer-burger-ui-components/dist/ui/box.css';
 import './App.module.scss';
-import AppHeader from './components/AppHeader';
-import BurgerIngredients from './components/BurgerIngredients';
-import BurgerConstructor from './components/BurgerConstructor';
+import AppHeader from './components/AppHeader/AppHeader';
+import BurgerIngredients from './components/BurgerIngredients/BurgerIngredients';
+import BurgerConstructor from './components/BurgerConstructor/BurgerConstructor';
 
 function App() {
   return (

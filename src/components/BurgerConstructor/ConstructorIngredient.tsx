@@ -10,7 +10,7 @@ import {
     ConstructorDragItem,
     CONSTRUCTOR_INGREDIENT_TYPE,
 } from '../../utils/types';
-import Styles from './index.module.scss';
+import Styles from './BurgerConstructor.module.scss';
 
 interface ConstructorIngredientProps {
     ingredient: Ingredient

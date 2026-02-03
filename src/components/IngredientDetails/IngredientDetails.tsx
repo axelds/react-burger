@@ -1,5 +1,5 @@
 import { useAppSelector } from '../../hooks/reducerHook';
-import Styles from './index.module.scss';
+import Styles from './IngredientDetails.module.scss';
 
 const IngrediendDetails = () => {
     const details = useAppSelector((state) => state.ingredientDetail)!

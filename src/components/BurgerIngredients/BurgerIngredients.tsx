@@ -1,12 +1,13 @@
 import { useState, useMemo, useRef, useEffect } from 'react'
-import Modal from '../Modal';
+import Modal from '../Modal/Modal';
 import { Ingredient } from '../../utils/types';
-import { getIngredients, MODAL_OPEN_INGREDIENT } from '../../services/actions';
-import IngredientCard from '../IngredientCard';
-import IngrediendDetails from '../IngredientDetails';
+import { getIngredients } from '../../services/actions/ingredients';
+import { MODAL_OPEN_INGREDIENT } from '../../services/actions/modal';
+import IngredientCard from '../IngredientCard/IngredientCard';
+import IngrediendDetails from '../IngredientDetails/IngredientDetails';
 import { useAppDispatch, useAppSelector } from '../../hooks/reducerHook';
 import { Tab, Button} from '@ya.praktikum/react-developer-burger-ui-components';
-import Styles from './index.module.scss';
+import Styles from './BurgerIngredients.module.scss';
 
 const BurgerIngredients = () => {
 const dispatch = useAppDispatch()
