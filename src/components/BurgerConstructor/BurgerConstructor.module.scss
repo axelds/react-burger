@@ -9,6 +9,11 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    width: 100%;
+
+    & > div {
+        width: 100%;
+    }
 
     & > svg {
         cursor: grab;
@@ -37,11 +42,7 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
-
-    & > div {
-
-        &:nth-child(2) {
-            order: 3;
-        }
-    }
+}
+.empty_text {
+    text-align: center;
 }

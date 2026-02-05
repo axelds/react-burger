@@ -1,7 +1,8 @@
-import React from 'react';
-import Styles from './index.module.scss';
+import { useAppSelector } from '../../hooks/reducerHook';
+import Styles from './IngredientDetails.module.scss';
 
-const IngrediendDetails = ( {details} ) => {
+const IngrediendDetails = () => {
+    const details = useAppSelector((state) => state.ingredientDetail)!
     return (
         <section className={Styles.details}>
             <div className={`${Styles.image} pb-4`}><img src={details.image_large} alt={details.name} /></div>
