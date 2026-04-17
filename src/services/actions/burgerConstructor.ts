@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { Ingredient, ConstructorIngredient } from '../../utils/types';
+import { Ingredient } from '../../utils/types';
 import {
   SetConstructorBunAction,
   AddIngredientToConstructorAction,
@@ -13,10 +13,6 @@ export const ADD_INGREDIENT_TO_CONSTRUCTOR = 'ADD_INGREDIENT_TO_CONSTRUCTOR';
 export const REMOVE_INGREDIENT_FROM_CONSTRUCTOR = 'REMOVE_INGREDIENT_FROM_CONSTRUCTOR';
 export const MOVE_INGREDIENT_IN_CONSTRUCTOR = 'MOVE_INGREDIENT_IN_CONSTRUCTOR';
 export const RESET_CONSTRUCTOR = 'RESET_CONSTRUCTOR';
-
-export const DELETE_INGREDIENT_CONSTRUCTOR = 'DELETE_INGREDIENT_CONSTRUCTOR';
-export const ADD_INGREDIENT_CONSTRUCTOR = 'ADD_INGREDIENT_CONSTRUCTOR';
-export const MOVE_INGREDIENT_CONSTRUCTOR = 'MOVE_INGREDIENT_CONSTRUCTOR';
 
 export const setConstructorBun = (ingredient: Ingredient): SetConstructorBunAction => ({
   type: SET_CONSTRUCTOR_BUN,
@@ -41,13 +37,3 @@ export const moveIngredientInConstructor = (fromIndex: number, toIndex: number):
 export const resetConstructor = (): ResetConstructorAction => ({
   type: RESET_CONSTRUCTOR,
 });
-
-export const addIngridient = (item: Ingredient) => {
-    return {
-        type: ADD_INGREDIENT_CONSTRUCTOR,
-        ingredient: {
-            ...item,
-            uniqueId: uuidv4(),
-        },
-    }
-}

@@ -1,12 +1,12 @@
-import { useState, useMemo, useRef, useEffect } from 'react'
+import { useState, useMemo, useRef, useEffect } from 'react';
+import { useOnInView } from "react-intersection-observer";
 import { useSelector } from '../../hooks/useRedux';
 import { Ingredient } from '../../utils/types';
 import { Ingredient as IngredientType } from '../../utils/types';
-import { fetchIngredients } from '../../services/actions/ingredients';
 import { MODAL_OPEN_INGREDIENT } from '../../services/actions/modal';
 import IngredientCard from '../IngredientCard/IngredientCard';
 import { useAppDispatch, useAppSelector } from '../../hooks/reducerHook';
-import { Tab, Button} from '@ya.praktikum/react-developer-burger-ui-components';
+import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import Styles from './BurgerIngredients.module.scss';
 
 const BurgerIngredients = () => {
@@ -26,14 +26,8 @@ const BurgerIngredients = () => {
     const sauceRef = useRef<HTMLDivElement>(null)
     const fillingRef = useRef<HTMLDivElement>(null)
 
-    const getData = async () => {
-        dispatch(fetchIngredients())
-        setLoading(false)
-    }
-
     useEffect(() => {
         setLoading(true)
-        //getData()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -126,21 +120,33 @@ const BurgerIngredients = () => {
             }
         }
     }
+
+    const breadTrackingRef = useOnInView(
+        (inView) => {
+            if (inView) {
+                setCurrent('bun')
+            }
+        }
+    );
+
+    const sauceTrackingRef = useOnInView(
+        (inView) => {
+            if (inView) {
+                setCurrent('sauce')
+            }
+        }
+    );
+
+    const fillingTrackingRef = useOnInView(
+        (inView) => {
+            if (inView) {
+                setCurrent('main')
+            }
+        }
+    );
     
     return (
         <section className="pt-10">
-            {isError && (
-                <div>
-                    <Button
-                        htmlType="button"
-                        type="primary"
-                        size="large"
-                        onClick={getData}
-                    >
-                        Перезагрузить
-                    </Button>
-                </div>
-            )}
             {!isError && (
                 <>
                     <h2 className="text text_type_main-large mb-5">Соберите бургер</h2>
@@ -157,7 +163,7 @@ const BurgerIngredients = () => {
                     </div>
 
                     <div className={Styles.product_list} ref={containerRef}>
-                        <div className={Styles.section}>
+                        <div className={Styles.section} ref={breadTrackingRef}>
                             <h2 className="text text_type_main-medium mb-5" ref={breadRef} data-section="bun">Булки</h2>
                             <div className={`${Styles.ingredientsList} mt-10`}>
                                 {categorizedIngredients.bun.map(
@@ -174,7 +180,7 @@ const BurgerIngredients = () => {
                                 )}
                             </div>
                         </div>
-                        <div className={Styles.section}>
+                        <div className={Styles.section} ref={sauceTrackingRef}>
                             <h2 className="text text_type_main-medium mb-5 mt-10" ref={sauceRef} data-section="sauce">Соусы</h2>
                             <div className={`${Styles.ingredientsList} mt-10`}>
                                 {categorizedIngredients.sauce.map(
@@ -191,7 +197,7 @@ const BurgerIngredients = () => {
                                 )}
                             </div>
                         </div>
-                        <div className={Styles.section}>
+                        <div className={Styles.section} ref={fillingTrackingRef}>
                             <h2 className="text text_type_main-medium mb-5 mt-10" ref={fillingRef} data-section="main">Начинки</h2>
                             <div className={`${Styles.ingredientsList} mt-10`}>
                                 {categorizedIngredients.main.map(

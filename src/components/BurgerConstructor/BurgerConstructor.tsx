@@ -65,7 +65,7 @@ const BurgerConstructor: React.FC<BurgerConstructorProps> = ({ onOrderClick }) =
         { isOver: boolean; canDrop: boolean }
     >({
         accept: 'ingredient',
-        drop: (ingredient) => handleDrop(ingredient.ingredient),
+        drop: (ingredient ) => handleDrop(ingredient.ingredient),
         collect: (monitor) => ({
             isOver: monitor.isOver(),
             canDrop: monitor.canDrop(),
@@ -107,7 +107,7 @@ const BurgerConstructor: React.FC<BurgerConstructorProps> = ({ onOrderClick }) =
                 <div className={Styles.draggable_list}>
                     {fillings.map((ingredient, index) => (
                         <ConstructorIngredientItem
-                            key={ingredient.uniqueId}
+                            key={ingredient.uuid}
                             item={ingredient}
                             index={index}
                             moveCard={handleReorderIngredients}

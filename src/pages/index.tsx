@@ -5,6 +5,7 @@ import ForgotPasswordPage from './ForgotPasswordPage/ForgotPasswordPage';
 import ResetPasswordPage from './ResetPasswordPage/ResetPasswordPage';
 import ProfilePage from './ProfilePage/ProfilePage';
 import ProfileOrders from './ProfilePage/ProfileOrders/ProfileOrders';
+import IngredientPage from './IngredientPage/IngredientPage';
 import NotFoundPage from './NotFoundPage/NotFoundPage';
 
 export {
@@ -15,5 +16,6 @@ export {
     ResetPasswordPage,
     ProfilePage,
     ProfileOrders,
+    IngredientPage,
     NotFoundPage
 };

@@ -12,7 +12,7 @@ import AppHeader from './components/AppHeader/AppHeader';
 import ProtectedRouteElement from './components/ProtectedRouteElement/ProtectedRouteElement';
 import Modal from './components/Modal/Modal';
 import IngredientDetails from './components/IngredientDetails/IngredientDetails';
-import { HomePage, LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage, ProfilePage, ProfileOrders, NotFoundPage } from './pages';
+import { HomePage, LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage, ProfilePage, ProfileOrders, NotFoundPage, IngredientPage } from './pages';
 import { initAuth } from './services/actions/auth';
 import { fetchIngredients } from './services/actions/ingredients';
 
@@ -45,6 +45,7 @@ function App() {
       <AppHeader />
       <Routes location={background || location}>
         <Route path="/" element={<HomePage />} />
+        {!background && <Route path="/ingredients/:id" element={<IngredientPage />} />}
         <Route
           path="/login"
           element={
