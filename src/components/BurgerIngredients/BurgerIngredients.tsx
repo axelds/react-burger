@@ -1,19 +1,18 @@
 import { useState, useMemo, useRef, useEffect } from 'react'
-import Modal from '../Modal/Modal';
+import { useSelector } from '../../hooks/useRedux';
 import { Ingredient } from '../../utils/types';
-import { getIngredients } from '../../services/actions/ingredients';
+import { Ingredient as IngredientType } from '../../utils/types';
+import { fetchIngredients } from '../../services/actions/ingredients';
 import { MODAL_OPEN_INGREDIENT } from '../../services/actions/modal';
 import IngredientCard from '../IngredientCard/IngredientCard';
-import IngrediendDetails from '../IngredientDetails/IngredientDetails';
 import { useAppDispatch, useAppSelector } from '../../hooks/reducerHook';
 import { Tab, Button} from '@ya.praktikum/react-developer-burger-ui-components';
 import Styles from './BurgerIngredients.module.scss';
 
 const BurgerIngredients = () => {
-const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch()
 
-    const isModalOpen = useAppSelector((state) => state.isModalDetail)
-    const ingredients = useAppSelector((state) => state.ingredients)
+    const ingredients = useSelector((state) => state.ingredients.items as IngredientType[])
     const isError = useAppSelector((state) => state.ingredientsFailed)
     const constructorIngredients = useAppSelector(
         (state) => state.ingredientsConstructor
@@ -28,13 +27,13 @@ const dispatch = useAppDispatch()
     const fillingRef = useRef<HTMLDivElement>(null)
 
     const getData = async () => {
-        dispatch(getIngredients())
+        dispatch(fetchIngredients())
         setLoading(false)
     }
 
     useEffect(() => {
         setLoading(true)
-        getData()
+        //getData()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -70,7 +69,7 @@ const dispatch = useAppDispatch()
 
         return () => observer.disconnect()
     }, [isLoading])
-
+    
     const categorizedIngredients = useMemo(
         () => ({
             bun: ingredients.filter(
@@ -210,12 +209,6 @@ const dispatch = useAppDispatch()
                             </div>
                         </div>
                     </div>
-
-                    {isModalOpen && (
-                        <Modal title="Детали ингредиента">
-                            <IngrediendDetails />
-                        </Modal>
-                    )}
                 </>
             )}
         </section>

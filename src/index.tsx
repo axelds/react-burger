@@ -8,7 +8,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { rootReducer } from './services/reducers'
+import rootReducer from './services/reducers'
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

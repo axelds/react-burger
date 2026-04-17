@@ -1,32 +1,19 @@
-import { Action, State } from '../utils/types';
-import ingredientsReducer from './reducers/ingredients';
-import orderReducer from './reducers/order';
-import modalReducer from './reducers/modal';
+import { combineReducers, Reducer } from 'redux';
+import ingredients from './reducers/ingredients';
+import burgerConstructor from './reducers/burgerConstructor';
+import currentIngredient from './reducers/currentIngredient';
+import password from './reducers/password';
+import auth from './reducers/auth';
+import order from './reducers/order';
+import { RootState, RootAction } from '../utils/types';
 
-export const initialState: State = {
-    ingredients: [],
-    ingredientsRequest: false,
-    ingredientsFailed: false,
+const rootReducer = combineReducers({
+    ingredients: ingredients as Reducer<RootState['ingredients'], RootAction>,
+    burgerConstructor: burgerConstructor as Reducer<RootState['burgerConstructor'], RootAction>,
+    currentIngredient: currentIngredient as Reducer<RootState['currentIngredient'], RootAction>,
+    auth: auth as Reducer<RootState['auth'], RootAction>,
+    order: order as Reducer<RootState['order'], RootAction>,
+    password: password as Reducer<RootState['password'], RootAction>
+});
 
-    order: null,
-    orderRequest: false,
-    orderFailed: false,
-
-    isModalDetail: false,
-    isModalOrder: false,
-    ingredientDetail: null,
-
-    ingredientsConstructor: [],
-}
-
-export const rootReducer = (state = initialState, action: Action) => {
-    return {
-        ...state,
-        ...Object.assign(
-            state,
-            ingredientsReducer(state, action),
-            orderReducer(state, action),
-            modalReducer(state, action)
-        )
-    }
-}
+export default rootReducer;

@@ -1,99 +1,87 @@
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-import type { Identifier, XYCoord } from 'dnd-core';
-import {
-    ConstructorElement,
-    DragIcon,
-} from '@ya.praktikum/react-developer-burger-ui-components';
-import {
-    Ingredient,
-    ConstructorDragItem,
-    CONSTRUCTOR_INGREDIENT_TYPE,
-} from '../../utils/types';
+import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import Styles from './BurgerConstructor.module.scss';
+import { ConstructorIngredient } from '../../utils/types';
 
-interface ConstructorIngredientProps {
-    ingredient: Ingredient
-    index: number
-    moveIngredient: (dragIndex: number, hoverIndex: number) => void
-    onRemove: (index: number) => void
+interface ConstructorFillingProps {
+  item: ConstructorIngredient;
+  index: number;
+  moveCard: (fromIndex: number, toIndex: number) => void;
+  onRemove: (uuid: string, ingredientId: string) => void;
 }
 
-const ConstructorIngredient = ({
-    ingredient,
-    index,
-    moveIngredient,
-    onRemove,
-}: ConstructorIngredientProps) => {
-    const ref = useRef<HTMLDivElement>(null)
+interface DragItem {
+  uuid: string;
+  index: number;
+}
 
-    const [{ handlerId }, drop] = useDrop<
-        ConstructorDragItem,
-        void,
-        { handlerId: Identifier | null }
-    >({
-        accept: CONSTRUCTOR_INGREDIENT_TYPE,
-        collect(monitor) {
-            return {
-                handlerId: monitor.getHandlerId(),
-            }
-        },
-        hover(item: ConstructorDragItem, monitor) {
-            if (!ref.current) return
+const ConstructorIngredientItem: React.FC<ConstructorFillingProps> = ({ item, index, moveCard, onRemove }) => {
+  const ref = useRef<HTMLLIElement>(null);
 
-            const dragIndex = item.index
-            const hoverIndex = index
+  const [{ handlerId }, drop] = useDrop<DragItem, void, { handlerId: string | symbol | null }>({
+    accept: 'constructor-filling',
+    collect: (monitor) => ({
+      handlerId: monitor.getHandlerId(),
+    }),
+    hover(dragItem, monitor) {
+      if (!ref.current) {
+        return;
+      }
+      const dragIndex = dragItem.index;
+      const hoverIndex = index;
 
-            if (dragIndex === hoverIndex) return
+      if (dragIndex === hoverIndex) {
+        return;
+      }
 
-            const hoverBoundingRect = ref.current?.getBoundingClientRect()
+      const hoverBoundingRect = ref.current.getBoundingClientRect();
+      const hoverMiddleY =
+        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+      const clientOffset = monitor.getClientOffset();
+      if (!clientOffset) return;
+      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
 
-            const hoverMiddleY =
-                (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
+      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+        return;
+      }
 
-            const clientOffset = monitor.getClientOffset()
+      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+        return;
+      }
 
-            const hoverClientY =
-                (clientOffset as XYCoord).y - hoverBoundingRect.top
+      moveCard(dragIndex, hoverIndex);
+      dragItem.index = hoverIndex;
+    },
+  });
 
-            if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) return
+  const [, drag] = useDrag<DragItem, void, { isDragging: boolean }>({
+    type: 'constructor-filling',
+    item: () => ({ uuid: item.uuid, index }),
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
 
-            if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) return
+  drag(drop(ref));
 
-            moveIngredient(dragIndex, hoverIndex)
-            item.index = hoverIndex
-        },
-    })
-
-    const [{ isDragging }, drag] = useDrag({
-        type: CONSTRUCTOR_INGREDIENT_TYPE,
-        item: () => {
-            return { ingredient, index, type: CONSTRUCTOR_INGREDIENT_TYPE }
-        },
-        collect: (monitor) => ({
-            isDragging: monitor.isDragging(),
-        }),
-    })
-
-    drag(drop(ref))
-
-    return (
-        <div
-            ref={ref}
-            className={Styles.draggable}
-            data-handler-id={handlerId}
-        >
-            <DragIcon type="primary" />
-            <div className={Styles.bunContainer}>
-                <ConstructorElement
-                    text={ingredient.name}
-                    price={ingredient.price}
-                    thumbnail={ingredient.image}
-                    handleClose={() => onRemove(index)}
-                />
-            </div>
+  return (
+    <li
+      ref={ref}
+      className={Styles.draggable}
+      data-handler-id={handlerId}
+    >
+        <DragIcon type="primary" />
+        <div className={Styles.bunContainer}>
+            <ConstructorElement
+                text={item.name}
+                price={item.price}
+                thumbnail={item.image}
+                handleClose={() => onRemove(item.uuid, item._id)}
+            />
         </div>
-    )
-}
+    </li>
+  );
+};
 
-export default ConstructorIngredient
+export default ConstructorIngredientItem;

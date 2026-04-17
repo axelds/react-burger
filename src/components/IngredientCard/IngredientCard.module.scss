@@ -6,7 +6,12 @@
     width: calc(50% - 12px);
     font-family: 'Jet Brains Mono';
     text-align: center;
-    cursor: pointer;
+
+    a {
+        color: #fff;
+        text-decoration: none;
+        cursor: pointer;
+    }
 
     .pic {
         position: relative;
