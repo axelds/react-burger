@@ -2,7 +2,7 @@ import { Logo, ProfileIcon, BurgerIcon, ListIcon } from '@ya.praktikum/react-dev
 import { NavLink } from 'react-router-dom';
 import Styles from './AppHeader.module.scss';
 
-const AppHeader = () => {
+const AppHeader: React.FC = () => {
   return (
       <header className="p-4">
         <nav>
