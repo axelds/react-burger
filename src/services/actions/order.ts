@@ -1,56 +1,80 @@
+import { request } from '../../utils/request';
+import { getAuthHeaders, getAccessToken } from './auth';
+import { Order, RootState } from '../../utils/types';
+import {
+  CreateOrderRequestAction,
+  CreateOrderSuccessAction,
+  CreateOrderFailureAction,
+  ResetOrderAction,
+  OrderAction,
+} from '../../utils/types';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import { Ingredient, State, Order } from '../../utils/types';
-import { request } from '../../utils/api';
-import { GET_INGREDIENTS_REQUEST } from './ingredients';
-import { MODAL_OPEN_ORDER } from './modal';
 
-export const POST_ORDER_REQUEST = 'POST_ORDER_REQUEST'
-export const POST_ORDER_SUCCESS = 'POST_ORDER_SUCCESS'
-export const POST_ORDER_FAILED = 'POST_ORDER_FAILED'
+export const CREATE_ORDER_REQUEST = 'CREATE_ORDER_REQUEST';
+export const CREATE_ORDER_SUCCESS = 'CREATE_ORDER_SUCCESS';
+export const CREATE_ORDER_FAILURE = 'CREATE_ORDER_FAILURE';
+export const RESET_ORDER = 'RESET_ORDER';
 
-export const CREATE_ORDER = 'CREATE_ORDER'
-export const REMOVE_ORDER = 'REMOVE_ORDER'
+const createOrderRequest = (): CreateOrderRequestAction => ({
+  type: CREATE_ORDER_REQUEST,
+});
 
+const createOrderSuccess = (order: Order): CreateOrderSuccessAction => ({
+  type: CREATE_ORDER_SUCCESS,
+  payload: order,
+});
 
-interface GetIngredientsAction {
-    type: string
-    ingredients?: Ingredient[]
+const createOrderFailure = (error: string): CreateOrderFailureAction => ({
+  type: CREATE_ORDER_FAILURE,
+  payload: error,
+});
+
+export const resetOrder = (): ResetOrderAction => ({
+  type: RESET_ORDER,
+});
+
+type OrderThunkAction = ThunkAction<Promise<void>, RootState, unknown, OrderAction>;
+
+interface CreateOrderRequest {
+  ingredients: string[];
 }
 
-interface PostOrderAction {
-    type: string
-    order?: Order
+interface OrderResponse {
+  success: boolean;
+  order?: Order;
+  data?: Order;
 }
 
-type APIAction = GetIngredientsAction | PostOrderAction
+export const createOrder = (ingredientIds: string[]): OrderThunkAction => {
+  return async (dispatch: ThunkDispatch<RootState, unknown, OrderAction>, getState) => {
+    dispatch(createOrderRequest());
 
-export const postOrder =
-    (
-        ingredients: Ingredient[]
-    ): ThunkAction<void, State, unknown, APIAction> =>
-    async (dispatch: ThunkDispatch<State, unknown, APIAction>) => {
-        dispatch({
-            type: GET_INGREDIENTS_REQUEST,
-        })
-        const data = ingredients.map((item) => item._id)
-        request('orders', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ ingredients: data }),
-        })
-            .then((data) => {
-                dispatch({
-                    type: POST_ORDER_SUCCESS,
-                    order: data,
-                })
-                dispatch({ type: MODAL_OPEN_ORDER })
-            })
-            .catch((error) => {
-                dispatch({
-                    type: POST_ORDER_FAILED,
-                })
-                alert(error)
-            })
+    try {
+      let accessToken = getState().auth.accessToken;
+      if (!accessToken) {
+        accessToken = getAccessToken();
+      }
+
+      if (!accessToken) {
+        throw new Error('Токен не найден. Необходима авторизация.');
+      }
+
+      const response = await request<OrderResponse>('/orders', {
+        method: 'POST',
+        headers: getAuthHeaders(accessToken),
+        body: JSON.stringify({ ingredients: ingredientIds } as CreateOrderRequest),
+      });
+
+      const responseData = response as unknown as OrderResponse;
+      const order = responseData.order || responseData.data;
+      if (order) {
+        dispatch(createOrderSuccess(order));
+      } else {
+        throw new Error('Данные заказа не получены');
+      }
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Ошибка создания заказа';
+      dispatch(createOrderFailure(errorMessage));
     }
+  };
+};

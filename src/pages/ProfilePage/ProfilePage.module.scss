@@ -1,0 +1,19 @@
+main {
+
+    nav {
+        width: 320px;
+        flex-direction: column;
+        gap: 0px;
+
+        a {
+            justify-content: flex-start;
+            align-items: flex-start;
+        }
+
+        button {
+            border: 0px;
+            text-align: left;
+            justify-content: flex-start;
+        }
+    }
+}

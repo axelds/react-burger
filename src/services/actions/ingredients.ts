@@ -1,54 +1,78 @@
-import { ThunkAction, ThunkDispatch } from 'redux-thunk'
-import { v4 as uuidv4 } from 'uuid'
+import { request } from '../../utils/request';
+import fallbackIngredients from '../../utils/data';
+import { Ingredient, RootState } from '../../utils/types';
+import {
+  FetchIngredientsRequestAction,
+  FetchIngredientsSuccessAction,
+  FetchIngredientsFailureAction,
+  IncrementIngredientCountAction,
+  DecrementIngredientCountAction,
+  ResetIngredientCountsAction,
+  IngredientsAction,
+} from '../../utils/types';
+import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import { Ingredient, State, Order } from '../../utils/types'
-import { request } from '../../utils/api'
+export const FETCH_INGREDIENTS_REQUEST = 'FETCH_INGREDIENTS_REQUEST';
+export const FETCH_INGREDIENTS_SUCCESS = 'FETCH_INGREDIENTS_SUCCESS';
+export const FETCH_INGREDIENTS_FAILURE = 'FETCH_INGREDIENTS_FAILURE';
+export const INCREMENT_INGREDIENT_COUNT = 'INCREMENT_INGREDIENT_COUNT';
+export const DECREMENT_INGREDIENT_COUNT = 'DECREMENT_INGREDIENT_COUNT';
+export const RESET_INGREDIENT_COUNTS = 'RESET_INGREDIENT_COUNTS';
 
-export const GET_INGREDIENTS_REQUEST = 'GET_INGREDIENTS_REQUEST'
-export const GET_INGREDIENTS_SUCCESS = 'GET_INGREDIENTS_SUCCESS'
-export const GET_INGREDIENTS_FAILED = 'GET_INGREDIENTS_FAILED'
+const fetchIngredientsRequest = (): FetchIngredientsRequestAction => ({
+  type: FETCH_INGREDIENTS_REQUEST,
+});
 
-export const GET_INGREDIENTS_CONSTRUCTOR = 'GET_INGREDIENTS_CONSTRUCTOR'
-export const ADD_INGREDIENT_CONSTRUCTOR = 'ADD_INGREDIENT_CONSTRUCTOR'
-export const MOVE_INGREDIENT_CONSTRUCTOR = 'MOVE_INGREDIENT_CONSTRUCTOR'
-export const DELETE_INGREDIENT_CONSTRUCTOR = 'DELETE_INGREDIENT_CONSTRUCTOR'
+const fetchIngredientsSuccess = (items: Ingredient[]): FetchIngredientsSuccessAction => ({
+  type: FETCH_INGREDIENTS_SUCCESS,
+  payload: items,
+});
 
-export const VIEW_INGREDIENT = 'VIEW_INGREDIENT'
+const fetchIngredientsFailure = (error: string): FetchIngredientsFailureAction => ({
+  type: FETCH_INGREDIENTS_FAILURE,
+  payload: error,
+});
 
-interface GetIngredientsAction {
-    type: string
-    ingredients?: Ingredient[]
+export const incrementIngredientCount = (id: string, amount: number = 1): IncrementIngredientCountAction => ({
+  type: INCREMENT_INGREDIENT_COUNT,
+  payload: { id, amount },
+});
+
+export const decrementIngredientCount = (id: string, amount: number = 1): DecrementIngredientCountAction => ({
+  type: DECREMENT_INGREDIENT_COUNT,
+  payload: { id, amount },
+});
+
+export const resetIngredientCounts = (): ResetIngredientCountsAction => ({
+  type: RESET_INGREDIENT_COUNTS,
+});
+
+type IngredientsThunkAction = ThunkAction<Promise<void>, RootState, unknown, IngredientsAction>;
+
+interface IngredientsResponse {
+  data: Ingredient[];
 }
 
-type APIAction = GetIngredientsAction
+export const fetchIngredients = (): IngredientsThunkAction => {
+  return async (dispatch: ThunkDispatch<RootState, unknown, IngredientsAction>) => {
+    dispatch(fetchIngredientsRequest());
 
-export const getIngredients =
-    (): ThunkAction<void, State, unknown, APIAction> =>
-    async (dispatch: ThunkDispatch<State, unknown, APIAction>) => {
-        dispatch({
-            type: GET_INGREDIENTS_REQUEST,
-        })
-        request('ingredients')
-            .then((data) => {
-                dispatch({
-                    type: GET_INGREDIENTS_SUCCESS,
-                    ingredients: data.data,
-                })
-            })
-            .catch((error) => {
-                dispatch({
-                    type: GET_INGREDIENTS_FAILED,
-                })
-                alert(error)
-            })
+    try {
+      const response = await request<IngredientsResponse>('/ingredients');
+      const responseData = response as unknown as IngredientsResponse;
+      if (responseData.data) {
+        dispatch(fetchIngredientsSuccess(responseData.data));
+      } else {
+        throw new Error('Error loading inrecipe data');
+      }
+    } catch (error) {
+      if (fallbackIngredients && fallbackIngredients.length > 0) {
+        console.warn('Error loading data', error);
+        dispatch(fetchIngredientsSuccess(fallbackIngredients as Ingredient[]));
+      } else {
+        const errorMessage = error instanceof Error ? error.message : 'Error loading inrecipe data';
+        dispatch(fetchIngredientsFailure(errorMessage));
+      }
     }
-
-export const addIngridient = (item: Ingredient) => {
-    return {
-        type: ADD_INGREDIENT_CONSTRUCTOR,
-        ingredient: {
-            ...item,
-            uniqueId: uuidv4(),
-        },
-    }
-}
+  };
+};

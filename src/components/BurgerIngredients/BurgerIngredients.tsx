@@ -1,19 +1,18 @@
-import { useState, useMemo, useRef, useEffect } from 'react'
-import Modal from '../Modal/Modal';
+import { useState, useMemo, useRef, useEffect } from 'react';
+import { useOnInView } from "react-intersection-observer";
+import { useSelector } from '../../hooks/useRedux';
 import { Ingredient } from '../../utils/types';
-import { getIngredients } from '../../services/actions/ingredients';
+import { Ingredient as IngredientType } from '../../utils/types';
 import { MODAL_OPEN_INGREDIENT } from '../../services/actions/modal';
 import IngredientCard from '../IngredientCard/IngredientCard';
-import IngrediendDetails from '../IngredientDetails/IngredientDetails';
 import { useAppDispatch, useAppSelector } from '../../hooks/reducerHook';
-import { Tab, Button} from '@ya.praktikum/react-developer-burger-ui-components';
+import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import Styles from './BurgerIngredients.module.scss';
 
 const BurgerIngredients = () => {
-const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch()
 
-    const isModalOpen = useAppSelector((state) => state.isModalDetail)
-    const ingredients = useAppSelector((state) => state.ingredients)
+    const ingredients = useSelector((state) => state.ingredients.items as IngredientType[])
     const isError = useAppSelector((state) => state.ingredientsFailed)
     const constructorIngredients = useAppSelector(
         (state) => state.ingredientsConstructor
@@ -27,14 +26,8 @@ const dispatch = useAppDispatch()
     const sauceRef = useRef<HTMLDivElement>(null)
     const fillingRef = useRef<HTMLDivElement>(null)
 
-    const getData = async () => {
-        dispatch(getIngredients())
-        setLoading(false)
-    }
-
     useEffect(() => {
         setLoading(true)
-        getData()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -70,7 +63,7 @@ const dispatch = useAppDispatch()
 
         return () => observer.disconnect()
     }, [isLoading])
-
+    
     const categorizedIngredients = useMemo(
         () => ({
             bun: ingredients.filter(
@@ -127,21 +120,33 @@ const dispatch = useAppDispatch()
             }
         }
     }
+
+    const breadTrackingRef = useOnInView(
+        (inView) => {
+            if (inView) {
+                setCurrent('bun')
+            }
+        }
+    );
+
+    const sauceTrackingRef = useOnInView(
+        (inView) => {
+            if (inView) {
+                setCurrent('sauce')
+            }
+        }
+    );
+
+    const fillingTrackingRef = useOnInView(
+        (inView) => {
+            if (inView) {
+                setCurrent('main')
+            }
+        }
+    );
     
     return (
         <section className="pt-10">
-            {isError && (
-                <div>
-                    <Button
-                        htmlType="button"
-                        type="primary"
-                        size="large"
-                        onClick={getData}
-                    >
-                        Перезагрузить
-                    </Button>
-                </div>
-            )}
             {!isError && (
                 <>
                     <h2 className="text text_type_main-large mb-5">Соберите бургер</h2>
@@ -158,7 +163,7 @@ const dispatch = useAppDispatch()
                     </div>
 
                     <div className={Styles.product_list} ref={containerRef}>
-                        <div className={Styles.section}>
+                        <div className={Styles.section} ref={breadTrackingRef}>
                             <h2 className="text text_type_main-medium mb-5" ref={breadRef} data-section="bun">Булки</h2>
                             <div className={`${Styles.ingredientsList} mt-10`}>
                                 {categorizedIngredients.bun.map(
@@ -175,7 +180,7 @@ const dispatch = useAppDispatch()
                                 )}
                             </div>
                         </div>
-                        <div className={Styles.section}>
+                        <div className={Styles.section} ref={sauceTrackingRef}>
                             <h2 className="text text_type_main-medium mb-5 mt-10" ref={sauceRef} data-section="sauce">Соусы</h2>
                             <div className={`${Styles.ingredientsList} mt-10`}>
                                 {categorizedIngredients.sauce.map(
@@ -192,7 +197,7 @@ const dispatch = useAppDispatch()
                                 )}
                             </div>
                         </div>
-                        <div className={Styles.section}>
+                        <div className={Styles.section} ref={fillingTrackingRef}>
                             <h2 className="text text_type_main-medium mb-5 mt-10" ref={fillingRef} data-section="main">Начинки</h2>
                             <div className={`${Styles.ingredientsList} mt-10`}>
                                 {categorizedIngredients.main.map(
@@ -210,12 +215,6 @@ const dispatch = useAppDispatch()
                             </div>
                         </div>
                     </div>
-
-                    {isModalOpen && (
-                        <Modal title="Детали ингредиента">
-                            <IngrediendDetails />
-                        </Modal>
-                    )}
                 </>
             )}
         </section>

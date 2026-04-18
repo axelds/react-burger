@@ -5,35 +5,6 @@ header {
     background: var(--background);
 }
 
-button {
-    display: flex;
-    height: 56px;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    background: none;
-    padding: 16px 20px !important;
-    color: var(--text-inactive-color);
-
-    svg {
-
-        path {
-            fill: var(--text-inactive-color);
-        }
-    }
-    
-    &:hover,
-    &.active {
-        color: var(--text-primary-color);
-
-        svg {
-            path {
-                fill: var(--text-primary-color);
-            }
-        }
-    }
-}
-
 nav {
     display: flex;
     gap: 8px;
@@ -41,5 +12,37 @@ nav {
 
     &:last-child {
         justify-content: flex-end;
+    }
+
+    a,
+    button {
+        display: flex;
+        height: 56px;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        background: none;
+        padding: 16px 20px !important;
+        color: var(--text-inactive-color);
+        text-decoration: none;
+        transition: all 0.2s ease;
+
+        svg {
+
+            path {
+                fill: var(--text-inactive-color);
+            }
+        }
+        
+        &:hover,
+        &.active {
+            color: var(--text-primary-color);
+
+            svg {
+                path {
+                    fill: var(--text-primary-color);
+                }
+            }
+        }
     }
 }

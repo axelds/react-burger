@@ -1,36 +1,42 @@
-import { JSX } from 'react';
-import { useCallback, useEffect } from 'react';
+import React, { useEffect, ReactNode } from 'react';
 import ReactDOM from 'react-dom';
 import { Button, CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import ModalOverlay from '../ModalOverlay/ModalOverlay';
-import { MODAL_CLOSE } from '../../services/actions/modal';
-import { useAppDispatch } from '../../hooks/reducerHook';
 import Styles from './Modal.module.scss';
 
 interface ModalProps {
-    children?: JSX.Element | JSX.Element[]
-    title?: string
+     title: string;
+    onClose: () => void;
+    children: ReactNode;
 }
 
-const Modal = ({ children, title }: ModalProps ) => {
-
-    const dispatch = useAppDispatch()
-
-    const closeWindow = useCallback(() => {
-        dispatch({ type: MODAL_CLOSE })
-    }, [dispatch])
+const Modal: React.FC<ModalProps> = ({ title, onClose, children }) => {
 
     useEffect(() => {
-        const handleEsc = (event: KeyboardEvent) => {
-            if (event.key === 'Escape') {
-                closeWindow()
-            }
+        const handleEscape = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+            onClose();
         }
-        window.addEventListener('keydown', handleEsc)
+        };
+
+        document.addEventListener('keydown', handleEscape);
+        
+        const originalOverflow = document.body.style.overflow;
+        const originalPaddingRight = document.body.style.paddingRight;
+        
+        const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+        
+        document.body.style.overflow = 'hidden';
+        if (scrollbarWidth > 0) {
+        document.body.style.paddingRight = `${scrollbarWidth}px`;
+        }
+
         return () => {
-            window.removeEventListener('keydown', handleEsc)
-        }
-    }, [closeWindow])
+        document.removeEventListener('keydown', handleEscape);
+        document.body.style.overflow = originalOverflow;
+        document.body.style.paddingRight = originalPaddingRight;
+        };
+    }, [onClose]);
 
     return (
         ReactDOM.createPortal(
@@ -39,7 +45,7 @@ const Modal = ({ children, title }: ModalProps ) => {
                     <div className="p-10">
                         <div className={Styles.modal_header}>
                             <h3 className="text text_type_main-large">{title}</h3>
-                            <Button htmlType="button" type="secondary" onClick={closeWindow}>
+                            <Button htmlType="button" type="secondary" onClick={onClose}>
                                 <CloseIcon type="primary" />
                             </Button>
                         </div>
@@ -48,7 +54,7 @@ const Modal = ({ children, title }: ModalProps ) => {
                         </div>
                     </div>
                 </div>
-                <ModalOverlay onClose={closeWindow} />
+                <ModalOverlay onClose={onClose} />
             </>,
             document.getElementById('modals') as HTMLElement
         )

@@ -1,8 +1,9 @@
 import type React from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { useDrag } from 'react-dnd';
 import {
     Counter,
-    CurrencyIcon,
+    CurrencyIcon
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import type { Ingredient, DragItem } from '../../utils/types';
@@ -13,14 +14,15 @@ import Styles from './IngredientCard.module.scss';
 interface IngredientCardProps {
     ingredient: Ingredient
     onClick: (ingredient: Ingredient) => void
-    getIngredientCount: (ingredient: Ingredient) => number
+    getIngredientCount?: (ingredient: Ingredient) => number
 }
 
 const IngredientCard: React.FC<IngredientCardProps> = ({
-    ingredient,
-    getIngredientCount,
-    onClick,
+    ingredient
 }) => {
+    const { count, _id } = ingredient;
+    const location = useLocation();
+    
     const [{ isDragging }, dragRef] = useDrag<
         DragItem,
         unknown,
@@ -33,20 +35,32 @@ const IngredientCard: React.FC<IngredientCardProps> = ({
         }),
     })
 
+    const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        if (isDragging) {
+        e.preventDefault();
+        e.stopPropagation();
+        return;
+        }
+    };
+
     return (
-        <div className={`${Styles.item} mb-8`} onClick={() => onClick(ingredient)} ref={dragRef as any} style={{ opacity: isDragging ? 0.5 : 1, cursor: 'move' }}>
-            <div className={Styles.pic}>
-                <img src={ingredient.image_large} alt={ingredient.name} />
-                {getIngredientCount(ingredient) > 0 && (
+        <div className={`${Styles.item} mb-8`} ref={dragRef as any} style={{ opacity: isDragging ? 0.5 : 1, cursor: 'move' }}>
+            <Link
+                to={`/ingredients/${_id}`}
+                state={{ background: location }}
+                onClick={handleClick}
+            >
+                <div className={Styles.pic}>
+                    <img src={ingredient.image_large} alt={ingredient.name} />
                     <Counter
-                        count={getIngredientCount(ingredient)}
-                        size="default"
-                        extraClass="m-1"
-                    />
-                )}
-            </div>
-            <div className={Styles.price}><span>{ingredient.price}</span> <CurrencyIcon type="primary" /> </div>
-            <div className={Styles.name}>{ingredient.name}</div>
+                            count={count ?? 0}
+                            size="default"
+                            extraClass="m-1"
+                        />
+                </div>
+                <div className={Styles.price}><span>{ingredient.price}</span> <CurrencyIcon type="primary" /> </div>
+                <div className={Styles.name}>{ingredient.name}</div>
+            </Link>
         </div>
     )
 }
