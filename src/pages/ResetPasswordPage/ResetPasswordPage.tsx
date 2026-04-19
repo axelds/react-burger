@@ -15,7 +15,7 @@ const ResetPassword: React.FC = () => {
 
   React.useEffect(() => {
     dispatch(resetPasswordReset());
-    if (!(location.state as any)?.fromForgotPassword) {
+    if (!(location.state)?.fromForgotPassword) {
       navigate('/forgot-password', { replace: true });
     }
   }, [dispatch, location.state, navigate]);
@@ -23,7 +23,7 @@ const ResetPassword: React.FC = () => {
   const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
     const result = await dispatch(resetPassword(password, token));
-    if ((result as any).success) {
+    if ((result).success) {
       navigate('/login');
     }
   };

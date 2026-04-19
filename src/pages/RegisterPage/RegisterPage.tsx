@@ -17,8 +17,8 @@ const RegisterPage: React.FC = () => {
   const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
     const result = await dispatch(register(email, password, name));
-    if ((result as any).success) {
-      const from = (location.state as any)?.from || { pathname: '/' };
+    if ((result).success) {
+      const from = (location.state)?.from || { pathname: '/' };
       navigate(from, { replace: true });
     }
   };

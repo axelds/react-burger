@@ -39,7 +39,7 @@ const ProfileOrderDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const location = useLocation();
-  const background = (location.state as any)?.background;
+  const background = (location.state as { background: boolean })?.background;
   const ingredients = useSelector((state) => state.ingredients.items as Ingredient[]);
   const userOrders = useSelector((state) => state.userOrders.orders);
   const accessToken = useSelector((state) => state.auth.accessToken);

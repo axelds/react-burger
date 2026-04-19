@@ -61,7 +61,7 @@ const ProfileOrderModal: React.FC = () => {
 function App() {
   const dispatch = useDispatch();
   const location = useLocation();
-  const background = (location.state as any)?.background;
+  const background = (location.state as { background: string })?.background;
 
   useEffect(() => {
     dispatch(initAuth());

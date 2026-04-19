@@ -13,7 +13,7 @@ const ProtectedRouteElement: React.FC<ProtectedRouteElementProps> = ({ children,
 
   if (onlyUnauth) {
     if (isAuthenticated || user) {
-      const from = (location.state as any)?.from || { pathname: '/' };
+      const from = (location.state)?.from || { pathname: '/' };
       return <Navigate to={from} replace />;
     }
     return <>{children}</>;
