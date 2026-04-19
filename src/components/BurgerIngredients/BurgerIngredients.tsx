@@ -3,19 +3,15 @@ import { useOnInView } from "react-intersection-observer";
 import { useSelector } from '../../hooks/useRedux';
 import { Ingredient } from '../../utils/types';
 import { Ingredient as IngredientType } from '../../utils/types';
-import { MODAL_OPEN_INGREDIENT } from '../../services/actions/modal';
 import IngredientCard from '../IngredientCard/IngredientCard';
-import { useAppDispatch, useAppSelector } from '../../hooks/reducerHook';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import Styles from './BurgerIngredients.module.scss';
 
 const BurgerIngredients = () => {
-    const dispatch = useAppDispatch()
 
     const ingredients = useSelector((state) => state.ingredients.items as IngredientType[])
-    const isError = useAppSelector((state) => state.ingredientsFailed)
-    const constructorIngredients = useAppSelector(
-        (state) => state.ingredientsConstructor
+    const constructorIngredients = useSelector(
+        (state) => state.burgerConstructor.fillings
     )
 
     const [current, setCurrent] = useState<string>('bun')
@@ -89,10 +85,6 @@ const BurgerIngredients = () => {
               ).length
     }
 
-    const handleIngredientClick = (ingredient: Ingredient) => {
-        dispatch({ type: MODAL_OPEN_INGREDIENT, ingredientDetail: ingredient })
-    }
-
     const handleScroll = (theme: 'bun' | 'sauce' | 'main') => {
         if (theme === 'bun') {
             if (breadRef.current) {
@@ -147,7 +139,6 @@ const BurgerIngredients = () => {
     
     return (
         <section className="pt-10">
-            {!isError && (
                 <>
                     <h2 className="text text_type_main-large mb-5">Соберите бургер</h2>
                     <div className={`${Styles.flex} pb-10`}>
@@ -171,9 +162,7 @@ const BurgerIngredients = () => {
                                         <IngredientCard
                                             key={ingredient._id}
                                             ingredient={ingredient}
-                                            onClick={() =>
-                                                handleIngredientClick(ingredient)
-                                            }
+                                            onClick={() => {}}
                                             getIngredientCount={getIngredientCount}
                                         />
                                     )
@@ -188,9 +177,7 @@ const BurgerIngredients = () => {
                                         <IngredientCard
                                             key={ingredient._id}
                                             ingredient={ingredient}
-                                            onClick={() =>
-                                                handleIngredientClick(ingredient)
-                                            }
+                                            onClick={() => {}}
                                             getIngredientCount={getIngredientCount}
                                         />
                                     )
@@ -205,9 +192,7 @@ const BurgerIngredients = () => {
                                         <IngredientCard
                                             key={ingredient._id}
                                             ingredient={ingredient}
-                                            onClick={() =>
-                                                handleIngredientClick(ingredient)
-                                            }
+                                            onClick={() => {}}
                                             getIngredientCount={getIngredientCount}
                                         />
                                     )
@@ -216,7 +201,6 @@ const BurgerIngredients = () => {
                         </div>
                     </div>
                 </>
-            )}
         </section>
     );
 }

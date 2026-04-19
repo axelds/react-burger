@@ -5,6 +5,8 @@ import currentIngredient from './reducers/currentIngredient';
 import password from './reducers/password';
 import auth from './reducers/auth';
 import order from './reducers/order';
+import feedReducer from './reducers/feed';
+import userOrdersReducer from './reducers/userOrders';
 import { RootState, RootAction } from '../utils/types';
 
 const rootReducer = combineReducers({
@@ -13,7 +15,9 @@ const rootReducer = combineReducers({
     currentIngredient: currentIngredient as Reducer<RootState['currentIngredient'], RootAction>,
     auth: auth as Reducer<RootState['auth'], RootAction>,
     order: order as Reducer<RootState['order'], RootAction>,
-    password: password as Reducer<RootState['password'], RootAction>
+    password: password as Reducer<RootState['password'], RootAction>,
+    feed: feedReducer as Reducer<RootState['feed'], RootAction>,
+    userOrders: userOrdersReducer as Reducer<RootState['userOrders'], RootAction>
 });
 
 export default rootReducer;
