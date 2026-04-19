@@ -13,7 +13,7 @@ const LoginPage: React.FC = () => {
   const { values, handleChange } = useForm({ email: '', password: '' });
   const { isLoading, error } = useSelector((state) => state.auth);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
     const result = await dispatch(login(values.email, values.password));
     if ((result as any).success) {

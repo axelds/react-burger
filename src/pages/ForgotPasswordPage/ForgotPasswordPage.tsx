@@ -15,7 +15,7 @@ const ForgotPassword: React.FC = () => {
     dispatch(resetPasswordReset());
   }, [dispatch]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
     const result = await dispatch(forgotPassword(email));
     if ((result as any).success) {

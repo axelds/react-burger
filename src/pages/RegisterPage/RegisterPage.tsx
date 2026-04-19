@@ -14,7 +14,7 @@ const RegisterPage: React.FC = () => {
   const [password, setPassword] = React.useState<string>('');
   const { isLoading, error } = useSelector((state) => state.auth);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
     const result = await dispatch(register(email, password, name));
     if ((result as any).success) {

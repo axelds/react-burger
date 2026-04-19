@@ -20,7 +20,7 @@ const ResetPassword: React.FC = () => {
     }
   }, [dispatch, location.state, navigate]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
     const result = await dispatch(resetPassword(password, token));
     if ((result as any).success) {
