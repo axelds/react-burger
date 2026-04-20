@@ -12,7 +12,7 @@ import AppHeader from './components/AppHeader/AppHeader';
 import ProtectedRouteElement from './components/ProtectedRouteElement/ProtectedRouteElement';
 import Modal from './components/Modal/Modal';
 import IngredientDetails from './components/IngredientDetails/IngredientDetails';
-import { HomePage, LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage, ProfilePage, ProfileOrders, NotFoundPage, IngredientPage } from './pages';
+import { HomePage, LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage, ProfilePage, ProfileOrders, ProfileOrderDetails, Feed, FeedOrderDetails, NotFoundPage, IngredientPage } from './pages';
 import { initAuth } from './services/actions/auth';
 import { fetchIngredients } from './services/actions/ingredients';
 
@@ -30,10 +30,38 @@ const IngredientModal: React.FC = () => {
   );
 };
 
+const FeedOrderModal: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleClose = () => {
+    navigate(-1);
+  };
+
+  return (
+    <Modal title="" onClose={handleClose}>
+      <FeedOrderDetails />
+    </Modal>
+  );
+};
+
+const ProfileOrderModal: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleClose = () => {
+    navigate(-1);
+  };
+
+  return (
+    <Modal title="" onClose={handleClose}>
+      <ProfileOrderDetails />
+    </Modal>
+  );
+};
+
 function App() {
   const dispatch = useDispatch();
   const location = useLocation();
-  const background = (location.state as any)?.background;
+  const background = (location.state as { background: string })?.background;
 
   useEffect(() => {
     dispatch(initAuth());
@@ -78,6 +106,15 @@ function App() {
             </ProtectedRouteElement>
           }
         />
+        <Route path="/feed" element={<Feed />} />
+        <Route
+          path="/feed/:id"
+          element={
+            !background ? (
+              <FeedOrderDetails />
+            ) : null
+          }
+        />
         <Route
           path="/profile"
           element={
@@ -85,9 +122,20 @@ function App() {
               <ProfilePage />
             </ProtectedRouteElement>
           }
-        >
+          >
           <Route path="orders" element={<ProfileOrders />} />
         </Route>
+        {!background && (
+        <Route
+            path="/profile/orders/:id"
+            element={
+              <ProtectedRouteElement>
+                <ProfileOrderDetails />
+              </ProtectedRouteElement>
+            }
+          />
+        )}
+        <Route path="orders" element={<ProfileOrders />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
       {background && (
@@ -96,6 +144,20 @@ function App() {
             path="/ingredients/:id"
             element={
               <IngredientModal />
+            }
+          />
+          <Route
+            path="/feed/:id"
+            element={
+              <FeedOrderModal />
+            }
+          />
+          <Route
+            path="/profile/orders/:id"
+            element={
+              <ProtectedRouteElement>
+                <ProfileOrderModal />
+              </ProtectedRouteElement>
             }
           />
         </Routes>

@@ -21,7 +21,6 @@ import {
   UpdateUserRequestAction,
   UpdateUserSuccessAction,
   UpdateUserFailureAction,
-  InitAuthAction,
   RootState
 } from '../../utils/types';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';

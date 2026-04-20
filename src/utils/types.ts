@@ -25,6 +25,7 @@ export interface IngredientsState {
   items: Ingredient[];
   isLoading: boolean;
   error: string | null;
+  ingredientsFailed?: boolean;
 }
 
 export interface DragItem {
@@ -53,20 +54,6 @@ export interface Order {
     createdAt?: string;
     updatedAt?: string;
     ingredients?: string[];
-}
-
-export interface State {
-    ingredients: Ingredient[]
-    ingredientsRequest: boolean
-    ingredientsFailed: boolean
-    ingredientDetail: null | Ingredient
-    ingredientsConstructor: Ingredient[]
-    isModalDetail: boolean
-    isModalOrder: boolean
-    order: null | Order
-    orderRequest: boolean
-    orderFailed: boolean
-    auth: AuthState
 }
 
 export interface StateIngredients {

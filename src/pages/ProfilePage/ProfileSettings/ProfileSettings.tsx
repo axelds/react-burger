@@ -80,7 +80,7 @@ const ProfileSettings: React.FC = () => {
 
     if (Object.keys(updateData).length > 0) {
       const result = await dispatch(updateUser(updateData.name, updateData.email, updateData.password));
-      if ((result as any).success) {
+      if ((result).success) {
         setPassword('');
         setIsChanged(false);
       }

@@ -90,7 +90,7 @@ const BurgerConstructor: React.FC<BurgerConstructorProps> = ({ onOrderClick }) =
     const isOrderDisabled = !bun || fillings.length === 0;
 
     return (
-        <section className={`${Styles.list} pt-25`} ref={dropRef as any} style={dropAreaStyle}>
+        <section className={`${Styles.list} pt-25`} ref={dropRef as unknown as React.RefObject<HTMLDivElement>} style={dropAreaStyle}>
 
             {bun && (
                 <div className={`${Styles.draggable} pl-8`}>

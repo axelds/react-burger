@@ -44,7 +44,7 @@ const IngredientCard: React.FC<IngredientCardProps> = ({
     };
 
     return (
-        <div className={`${Styles.item} mb-8`} ref={dragRef as any} style={{ opacity: isDragging ? 0.5 : 1, cursor: 'move' }}>
+        <div className={`${Styles.item} mb-8`} ref={dragRef as unknown as React.RefObject<HTMLDivElement>} style={{ opacity: isDragging ? 0.5 : 1, cursor: 'move' }}>
             <Link
                 to={`/ingredients/${_id}`}
                 state={{ background: location }}
