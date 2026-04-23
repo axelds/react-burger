@@ -68,6 +68,7 @@ const ConstructorIngredientItem: React.FC<ConstructorFillingProps> = ({ item, in
   return (
     <li
       ref={ref}
+      data-testid="constructor-filling"
       className={Styles.draggable}
       data-handler-id={handlerId}
     >

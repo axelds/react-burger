@@ -33,7 +33,6 @@ const Feed: React.FC = () => {
       .map((id) => ingredients.find((ing) => ing._id === id))
       .filter((ing) => ing !== undefined) as Ingredient[];
 
-    const hasBun = orderIngredients.some((ing) => ing.type === 'bun');
     const hasMain = orderIngredients.some((ing) => ing.type === 'main');
     const hasSauce = orderIngredients.some((ing) => ing.type === 'sauce');
 

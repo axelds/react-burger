@@ -32,8 +32,10 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test": "vitest",
+    "eject": "react-scripts eject",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "eslintConfig": {
     "extends": [
@@ -54,11 +56,14 @@
     ]
   },
   "devDependencies": {
+    "@4tw/cypress-drag-drop": "^2.3.1",
     "@types/react": "^19.2.10",
     "@types/react-dom": "^19.2.3",
     "ajv": "^7.2.4",
     "css-loader": "^7.1.2",
+    "cypress": "^15.14.1",
     "sass": "^1.97.1",
-    "sass-loader": "^16.0.6"
+    "sass-loader": "^16.0.6",
+    "vitest": "^4.1.5"
   }
 }

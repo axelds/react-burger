@@ -50,7 +50,7 @@ const IngredientCard: React.FC<IngredientCardProps> = ({
                 state={{ background: location }}
                 onClick={handleClick}
             >
-                <div className={Styles.pic}>
+                <div className={Styles.pic} data-testid="ingredient-card">
                     <img src={ingredient.image_large} alt={ingredient.name} />
                     <Counter
                             count={count ?? 0}

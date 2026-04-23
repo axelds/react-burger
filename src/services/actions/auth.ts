@@ -11,7 +11,6 @@ import {
   LoginFailureAction,
   LogoutRequestAction,
   LogoutSuccessAction,
-  LogoutFailureAction,
   UpdateTokenRequestAction,
   UpdateTokenSuccessAction,
   UpdateTokenFailureAction,
@@ -87,11 +86,6 @@ const logoutRequest = (): LogoutRequestAction => ({
 
 const logoutSuccess = (): LogoutSuccessAction => ({
   type: LOGOUT_SUCCESS,
-});
-
-const logoutFailure = (error: string): LogoutFailureAction => ({
-  type: LOGOUT_FAILURE,
-  payload: error,
 });
 
 const updateTokenRequest = (): UpdateTokenRequestAction => ({

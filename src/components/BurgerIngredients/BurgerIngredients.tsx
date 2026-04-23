@@ -154,7 +154,7 @@ const BurgerIngredients = () => {
                     </div>
 
                     <div className={Styles.product_list} ref={containerRef}>
-                        <div className={Styles.section} ref={breadTrackingRef}>
+                        <div id="section-buns" className={Styles.section} ref={breadTrackingRef}>
                             <h2 className="text text_type_main-medium mb-5" ref={breadRef} data-section="bun">Булки</h2>
                             <div className={`${Styles.ingredientsList} mt-10`}>
                                 {categorizedIngredients.bun.map(
@@ -169,7 +169,7 @@ const BurgerIngredients = () => {
                                 )}
                             </div>
                         </div>
-                        <div className={Styles.section} ref={sauceTrackingRef}>
+                        <div id="section-sauces" className={Styles.section} ref={sauceTrackingRef}>
                             <h2 className="text text_type_main-medium mb-5 mt-10" ref={sauceRef} data-section="sauce">Соусы</h2>
                             <div className={`${Styles.ingredientsList} mt-10`}>
                                 {categorizedIngredients.sauce.map(
@@ -184,7 +184,7 @@ const BurgerIngredients = () => {
                                 )}
                             </div>
                         </div>
-                        <div className={Styles.section} ref={fillingTrackingRef}>
+                        <div id="section-mains" className={Styles.section} ref={fillingTrackingRef}>
                             <h2 className="text text_type_main-medium mb-5 mt-10" ref={fillingRef} data-section="main">Начинки</h2>
                             <div className={`${Styles.ingredientsList} mt-10`}>
                                 {categorizedIngredients.main.map(
