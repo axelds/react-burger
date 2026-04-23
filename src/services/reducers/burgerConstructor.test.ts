@@ -49,10 +49,7 @@ describe('burgerConstructorReducer', () => {
     it('should return the initial state', () => {
       expect(
         burgerConstructorReducer(undefined, { type: 'UNKNOWN_ACTION' } as any)
-      ).toEqual({
-        bun: null,
-        fillings: [],
-      });
+      ).toEqual(burgerConstructorInitialState);
     });
   });
 

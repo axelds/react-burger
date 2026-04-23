@@ -1,5 +1,6 @@
 import { SELECTORS } from './selectors';
-
+import { INCREMENT_INGREDIENT_COUNT } from '../../src/services/actions/ingredients';
+import { ADD_INGREDIENT_TO_CONSTRUCTOR, SET_CONSTRUCTOR_BUN } from '../../src/services/actions/burgerConstructor';
 declare global {
   namespace Cypress {
     interface Chainable {
@@ -121,11 +122,11 @@ Cypress.Commands.add('addBunToConstructor', () => {
     if (bun) {
       // Диспатчим actions для добавления булки
       store.dispatch({
-        type: 'SET_CONSTRUCTOR_BUN',
+        type: SET_CONSTRUCTOR_BUN,
         payload: bun,
       });
       store.dispatch({
-        type: 'INCREMENT_INGREDIENT_COUNT',
+        type: INCREMENT_INGREDIENT_COUNT,
         payload: { id: bun._id, amount: 2 },
       });
     }
@@ -160,11 +161,11 @@ Cypress.Commands.add('addFillingToConstructor', (tabName: string) => {
       
       // Диспатчим actions для добавления начинки
       store.dispatch({
-        type: 'ADD_INGREDIENT_TO_CONSTRUCTOR',
+        type: ADD_INGREDIENT_TO_CONSTRUCTOR,
         payload: { ...filling, uuid },
       });
       store.dispatch({
-        type: 'INCREMENT_INGREDIENT_COUNT',
+        type: INCREMENT_INGREDIENT_COUNT,
         payload: { id: filling._id, amount: 1 },
       });
       
