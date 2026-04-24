@@ -90,7 +90,7 @@ const BurgerConstructor: React.FC<BurgerConstructorProps> = ({ onOrderClick }) =
     const isOrderDisabled = !bun || fillings.length === 0;
 
     return (
-        <section className={`${Styles.list} pt-25`} ref={dropRef as unknown as React.RefObject<HTMLDivElement>} style={dropAreaStyle}>
+        <section className={`${Styles.list} pt-25`} ref={dropRef as unknown as React.RefObject<HTMLDivElement>} style={dropAreaStyle} data-testid="constructor-drop-zone">
 
             {bun && (
                 <div className={`${Styles.draggable} pl-8`}>
@@ -129,7 +129,10 @@ const BurgerConstructor: React.FC<BurgerConstructorProps> = ({ onOrderClick }) =
             )}
 
             <div className={`${Styles.total} mt-10`}>
-                <div className="mr-10"><span>{totalPrice}</span> <CurrencyIcon type="primary" /></div>
+                <div className="mr-10" data-testid="order-total">
+                    <span>{totalPrice}</span> 
+                    <CurrencyIcon type="primary" />
+                </div>
                 <Button htmlType="button" type="primary" size="large" onClick={onOrderClick} disabled={isOrderDisabled}>
                     Оформить заказ
                 </Button>

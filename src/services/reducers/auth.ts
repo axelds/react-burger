@@ -29,6 +29,8 @@ const initialState = {
   isAuthenticated: false,
 };
 
+export { initialState as authInitialState };
+
 const auth = (state = initialState, action:any) => {
   switch (action.type) {
     case REGISTER_REQUEST:

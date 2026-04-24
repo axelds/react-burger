@@ -8,7 +8,7 @@ const ModalOverlay = ({ onClose }: ModalOverlayProps ) => {
         }
     };
     return (
-        <div className={Styles.overlay} onClick={handleOverlayClick}></div>
+        <div data-testid="modal-overlay" className={Styles.overlay} onClick={handleOverlayClick}></div>
     );
 };
 

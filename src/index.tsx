@@ -1,19 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { applyMiddleware, createStore, Reducer } from 'redux'
-import { Provider } from 'react-redux'
-import { thunk } from 'redux-thunk'
-import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
-import { composeWithDevTools } from 'redux-devtools-extension'
+import { Provider } from 'react-redux';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import rootReducer from './services/reducers';
 import store from './services/store';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
+if (typeof window !== 'undefined') {
+  (window as any).__REDUX_STORE__ = store;
+}
 
 root.render(
   <React.StrictMode>

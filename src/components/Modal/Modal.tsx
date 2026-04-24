@@ -5,7 +5,7 @@ import ModalOverlay from '../ModalOverlay/ModalOverlay';
 import Styles from './Modal.module.scss';
 
 interface ModalProps {
-     title: string;
+    title: string;
     onClose: () => void;
     children: ReactNode;
 }
@@ -45,7 +45,7 @@ const Modal: React.FC<ModalProps> = ({ title, onClose, children }) => {
                     <div className="p-10">
                         <div className={Styles.modal_header}>
                             <h3 className="text text_type_main-large">{title}</h3>
-                            <Button htmlType="button" type="secondary" onClick={onClose}>
+                            <Button htmlType="button" type="secondary" onClick={onClose} aria-label="Закрыть">
                                 <CloseIcon type="primary" />
                             </Button>
                         </div>
